@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import React, { useState, useEffect } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,30 +9,33 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useRouter } from "next/navigation";
 
 interface AuthModalProps {
-  children: React.ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
   defaultTab?: "signin" | "signup";
 }
 
-const AuthModal = ({ children, defaultTab = "signin" }: AuthModalProps) => {
+const AuthModal = ({ isOpen, onClose, defaultTab = "signin" }: AuthModalProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const [role, setRole] = useState<"patient" | "doctor">("patient");
+  const [activeTab, setActiveTab] = useState(defaultTab);
   const router = useRouter();
+
+  useEffect(() => {
+    setActiveTab(defaultTab);
+  }, [defaultTab]);
 
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Sign in attempt:", { email, password });
-    // TODO: Implement actual authentication
-    // For demonstration, let's assume login is successful
-    // and we can determine the role from the backend.
-    // We'll simulate this by checking the email.
-    if (email.includes("doctor")) {
+    console.log("Sign in attempt:", { email, password, role });
+    if (role === "doctor") {
       router.push("/doctor");
     } else {
-      router.push("/"); // Or a patient dashboard
+      router.push("/");
     }
+    onClose();
   };
 
   const handleSignUp = (e: React.FormEvent) => {
@@ -42,30 +45,27 @@ const AuthModal = ({ children, defaultTab = "signin" }: AuthModalProps) => {
       return;
     }
     console.log("Sign up attempt:", { name, email, password, role });
-    // TODO: Implement actual authentication
     if (role === "doctor") {
       router.push("/doctor");
     } else {
       router.push("/");
     }
+    onClose();
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Welcome to MediCare AI</DialogTitle>
         </DialogHeader>
-        <Tabs defaultValue={defaultTab} className="w-full">
+        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "signin" | "signup")} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="signin">Sign In</TabsTrigger>
             <TabsTrigger value="signup">Get Started</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="signin" className="space-y-4">
+          <TabsContent value="signin" className="space-y-4 pt-4">
             <form onSubmit={handleSignIn} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="signin-email">Email</Label>
@@ -89,13 +89,31 @@ const AuthModal = ({ children, defaultTab = "signin" }: AuthModalProps) => {
                   required
                 />
               </div>
+              <div className="space-y-2">
+                <Label>I am a:</Label>
+                <RadioGroup
+                  defaultValue="patient"
+                  className="flex space-x-4"
+                  onValueChange={(value: "patient" | "doctor") => setRole(value)}
+                  value={role}
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="patient" id="signin-patient" />
+                    <Label htmlFor="signin-patient">Patient</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="doctor" id="signin-doctor" />
+                    <Label htmlFor="signin-doctor">Doctor</Label>
+                  </div>
+                </RadioGroup>
+              </div>
               <Button type="submit" className="w-full">
                 Sign In
               </Button>
             </form>
           </TabsContent>
           
-          <TabsContent value="signup" className="space-y-4">
+          <TabsContent value="signup" className="space-y-4 pt-4">
             <form onSubmit={handleSignUp} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="signup-name">Full Name</Label>
@@ -147,6 +165,7 @@ const AuthModal = ({ children, defaultTab = "signin" }: AuthModalProps) => {
                   defaultValue="patient"
                   className="flex space-x-4"
                   onValueChange={(value: "patient" | "doctor") => setRole(value)}
+                  value={role}
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="patient" id="patient" />

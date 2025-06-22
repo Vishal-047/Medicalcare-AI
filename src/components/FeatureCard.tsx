@@ -11,13 +11,13 @@ interface FeatureCardProps {
 
 const FeatureCard = ({ icon, title, description, onClick }: FeatureCardProps) => {
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-full">
+    <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer h-full bg-card text-card-foreground">
       <CardHeader className="text-center pb-4">
         <div className="flex justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
           {icon}
         </div>
-        <CardTitle className="text-xl font-bold text-gray-900 mb-2">{title}</CardTitle>
-        <CardDescription className="text-gray-600">{description}</CardDescription>
+        <CardTitle className="text-xl font-bold text-foreground mb-2">{title}</CardTitle>
+        <CardDescription className="text-muted-foreground">{description}</CardDescription>
       </CardHeader>
       <CardContent className="pt-0">
         <Button 
