@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useRouter } from "next/navigation";
 
 interface AuthModalProps {
   children: React.ReactNode;
@@ -16,11 +18,21 @@ const AuthModal = ({ children, defaultTab = "signin" }: AuthModalProps) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
+  const [role, setRole] = useState<"patient" | "doctor">("patient");
+  const router = useRouter();
 
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Sign in attempt:", { email, password });
     // TODO: Implement actual authentication
+    // For demonstration, let's assume login is successful
+    // and we can determine the role from the backend.
+    // We'll simulate this by checking the email.
+    if (email.includes("doctor")) {
+      router.push("/doctor");
+    } else {
+      router.push("/"); // Or a patient dashboard
+    }
   };
 
   const handleSignUp = (e: React.FormEvent) => {
@@ -29,8 +41,13 @@ const AuthModal = ({ children, defaultTab = "signin" }: AuthModalProps) => {
       alert("Passwords don't match!");
       return;
     }
-    console.log("Sign up attempt:", { name, email, password });
+    console.log("Sign up attempt:", { name, email, password, role });
     // TODO: Implement actual authentication
+    if (role === "doctor") {
+      router.push("/doctor");
+    } else {
+      router.push("/");
+    }
   };
 
   return (
@@ -123,6 +140,23 @@ const AuthModal = ({ children, defaultTab = "signin" }: AuthModalProps) => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 />
+              </div>
+              <div className="space-y-2">
+                <Label>I am a:</Label>
+                <RadioGroup
+                  defaultValue="patient"
+                  className="flex space-x-4"
+                  onValueChange={(value: "patient" | "doctor") => setRole(value)}
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="patient" id="patient" />
+                    <Label htmlFor="patient">Patient</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="doctor" id="doctor" />
+                    <Label htmlFor="doctor">Doctor</Label>
+                  </div>
+                </RadioGroup>
               </div>
               <Button type="submit" className="w-full">
                 Get Started
