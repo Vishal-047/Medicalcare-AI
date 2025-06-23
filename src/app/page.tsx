@@ -17,37 +17,43 @@ const Home = () => {
       icon: <Mic className="w-8 h-8 text-blue-600" />,
       title: "Speech Recognition",
       description: "Describe your symptoms using voice commands for instant AI analysis",
-      path: "/speech-analysis"
+      path: "/speech-analysis",
+      buttonLabel: "Get Started"
     },
     {
       icon: <Brain className="w-8 h-8 text-purple-600" />,
-      title: "AI Medical Analysis",
-      description: "Get intelligent health insights and preliminary assessments",
-      path: "/ai-analysis"
+      title: "Analyze Medical Report",
+      description: "Upload your lab report and let AI explain it in simple language",
+      path: "/ai-analysis",
+      buttonLabel: "Start"
     },
     {
       icon: <MapPin className="w-8 h-8 text-green-600" />,
       title: "Find Nearby Care",
       description: "Locate hospitals and doctors in your area with ratings and reviews",
-      path: "/find-care"
+      path: "/find-care",
+      buttonLabel: "Find"
     },
     {
       icon: <FileText className="w-8 h-8 text-orange-600" />,
       title: "Medical Records",
       description: "Securely store and manage your medical history and documents",
-      path: "/medical-records"
+      path: "/medical-records",
+      buttonLabel: "Check"
     },
     {
       icon: <Users className="w-8 h-8 text-red-600" />,
       title: "Doctor Directory",
       description: "Browse qualified healthcare professionals by specialty",
-      path: "/doctors"
+      path: "/doctor-directory",
+      buttonLabel: "Check"
     },
     {
       icon: <Activity className="w-8 h-8 text-teal-600" />,
       title: "Health Monitoring",
       description: "Track your health metrics and receive personalized insights",
-      path: "/health-monitoring"
+      path: "/health-monitoring",
+      buttonLabel: "Start"
     }
   ];
 
@@ -75,6 +81,7 @@ const Home = () => {
               title={feature.title}
               description={feature.description}
               onClick={() => navigate.push(feature.path)}
+              buttonLabel={feature.buttonLabel}
             />
           ))}
         </div>

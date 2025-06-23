@@ -41,7 +41,7 @@ const Header = () => {
                 Find Care
               </button>
               <button 
-                onClick={() => navigate.push("/doctors")}
+                onClick={() => navigate.push("/doctor-directory")}
                 className="text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors cursor-pointer"
               >
                 Doctors
@@ -51,6 +51,12 @@ const Header = () => {
                 className="text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors cursor-pointer"
               >
                 Records
+              </button>
+              <button 
+                onClick={() => navigate.push("/join-us")}
+                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors cursor-pointer"
+              >
+                Join Us
               </button>
             </nav>
 

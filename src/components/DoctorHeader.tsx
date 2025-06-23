@@ -10,7 +10,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { useRouter } from "next/navigation";
 
 const navLinks = [
-  { href: "/doctor", label: "Dashboard", icon: Mountain },
+  { href: "/doctor/dashboard", label: "Dashboard", icon: Mountain },
   { href: "/doctor/activity", label: "Activity", icon: Activity },
   { href: "/doctor/patients", label: "Patients", icon: Users },
   { href: "/doctor/earnings", label: "Earnings", icon: DollarSign },
